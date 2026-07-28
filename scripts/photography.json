@@ -1,0 +1,20 @@
+{
+  "note": "Accepted generated photography. fetch-photography.mjs downloads these at build time (Vercel has open egress); the committed art placeholders remain the graceful fallback anywhere the CDN is unreachable.",
+  "slots": {
+    "hero": {
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FOrgc2VaVaPtF45Q3QBO8qJdBk/hf_20260728_193604_844d70c5-d7d9-44b6-9ffa-35c44c6f1e0b.png",
+      "width": 2016,
+      "height": 1260
+    },
+    "valley": {
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FOrgc2VaVaPtF45Q3QBO8qJdBk/hf_20260728_193919_5bb6a67a-8670-4664-ba5a-4a1bc3c20d29.png",
+      "width": 2016,
+      "height": 1260
+    },
+    "maren": {
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3FOrgc2VaVaPtF45Q3QBO8qJdBk/hf_20260728_194826_87e4f91b-98f5-4e41-99a9-b8b41a2a9509.png",
+      "width": 1440,
+      "height": 1800
+    }
+  }
+}

@@ -6,6 +6,8 @@ import "@fontsource-variable/fraunces/full-italic.css";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import MotionProvider from "@/components/motion/MotionProvider";
+import Choreographer from "@/components/motion/Choreographer";
 import { site } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -32,6 +34,8 @@ export default function RootLayout({
         <a href="#main" className="skip-link dossier">
           Skip to content
         </a>
+        <MotionProvider />
+        <Choreographer />
         <Header />
         <main id="main" className="flex-1">
           {children}

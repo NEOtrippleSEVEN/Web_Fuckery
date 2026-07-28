@@ -23,6 +23,7 @@ export default function Home() {
           placeholder="blur"
           sizes="100vw"
           className="object-cover"
+          data-hero-img
         />
         <div className="absolute inset-0 bg-linear-to-b from-evergreen/55 via-transparent to-evergreen" />
 
