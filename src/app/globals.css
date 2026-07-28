@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+@theme {
+  --color-evergreen: #0c120f;
+  --color-cedar: #161e19;
+  --color-parchment: #f5f2e9;
+  --color-limestone: #ede8dd;
+  --color-fog: #8b958d;
+  --color-brass: #b4915a;
+
+  --tracking-label: 0.14em;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: "Fraunces Variable", Georgia, serif;
+}
+
+:root {
+  --type-display: clamp(2.625rem, 7vw, 6.75rem);
+  --type-h1: clamp(2.25rem, 4.6vw, 4.25rem);
+  --type-h2: clamp(1.875rem, 3.2vw, 2.875rem);
+  --type-h3: clamp(1.375rem, 1.9vw, 1.75rem);
+  --type-lede: clamp(1.125rem, 1.5vw, 1.375rem);
+  --gutter: clamp(1.25rem, 4.5vw, 4.5rem);
+  --space-section: clamp(5.5rem, 16vh, 11rem);
+}
+
+body {
+  background: var(--color-evergreen);
+  color: var(--color-limestone);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-brass);
+  color: var(--color-evergreen);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 3px;
+}
+
+/* ---------- Editorial type roles ---------- */
+
+.font-display {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
+  font-weight: 380;
+  letter-spacing: -0.015em;
+}
+
+.type-display {
+  font-size: var(--type-display);
+  line-height: 0.98;
+}
+
+.type-h1 {
+  font-size: var(--type-h1);
+  line-height: 1.02;
+}
+
+.type-h2 {
+  font-size: var(--type-h2);
+  line-height: 1.08;
+}
+
+.type-h3 {
+  font-size: var(--type-h3);
+  line-height: 1.2;
+}
+
+.type-lede {
+  font-size: var(--type-lede);
+  line-height: 1.55;
+}
+
+/* Mono voices: labels shout quietly, dossiers state facts */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.dossier {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- Layout primitives ---------- */
+
+.shell {
+  margin-inline: auto;
+  max-width: 100rem;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--space-section);
+}
+
+/* Light passages: parchment ground, evergreen ink */
+.surface-light {
+  background: var(--color-parchment);
+  color: var(--color-evergreen);
+}
+
+/* ---------- Interactive ---------- */
+
+.link-underline {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--color-brass), transparent 45%);
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.3s;
+}
+
+.link-underline:hover {
+  text-decoration-color: var(--color-brass);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 2px;
+  padding: 1rem 1.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.btn-solid {
+  background: var(--color-brass);
+  color: var(--color-evergreen);
+}
+
+.btn-solid:hover {
+  background: color-mix(in oklab, var(--color-brass), var(--color-limestone) 22%);
+}
+
+.btn-line {
+  border: 1px solid color-mix(in oklab, var(--color-brass), transparent 35%);
+  color: var(--color-limestone);
+}
+
+.btn-line:hover {
+  border-color: var(--color-brass);
+  color: var(--color-brass);
+}
+
+.surface-light .btn-line {
+  color: var(--color-evergreen);
+}
+
+.surface-light .btn-line:hover {
+  color: var(--color-brass);
+}
+
+/* ---------- Accessibility floor ---------- */
+
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: var(--gutter);
+  z-index: 100;
+  background: var(--color-brass);
+  color: var(--color-evergreen);
+  padding: 0.75rem 1.25rem;
+  border-radius: 2px;
+}
+
+.skip-link:focus-visible {
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
