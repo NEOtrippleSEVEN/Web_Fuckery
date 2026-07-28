@@ -11,7 +11,7 @@ page.on("pageerror", (e) => errors.push(String(e)));
 await page.goto("http://localhost:3100/", { waitUntil: "commit" });
 await page.waitForTimeout(700);
 await page.screenshot({ path: `${OUT}/s-preloader.png` });
-await page.waitForTimeout(2800);
+await page.waitForTimeout(3600);
 const overlayGone = await page.evaluate(() => !document.querySelector("[data-loader-overlay]"));
 await page.screenshot({ path: `${OUT}/s-after-loader.png` });
 console.log("preloader dismissed:", overlayGone);

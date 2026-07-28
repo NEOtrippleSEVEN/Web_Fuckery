@@ -6,10 +6,8 @@ import "@fontsource-variable/fraunces/full-italic.css";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import MotionProvider from "@/components/motion/MotionProvider";
-import Choreographer from "@/components/motion/Choreographer";
+import MotionRuntime from "@/components/motion/MotionRuntime";
 import Preloader from "@/components/motion/Preloader";
-import TheViewing from "@/components/motion/TheViewing";
 import { site } from "@/data/site";
 
 // Runs before first paint: returning visitors and reduced-motion users never
@@ -45,9 +43,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <Preloader />
-        <MotionProvider />
-        <Choreographer />
-        <TheViewing />
+        <MotionRuntime />
         <Header />
         <main id="main" className="flex-1">
           {children}
