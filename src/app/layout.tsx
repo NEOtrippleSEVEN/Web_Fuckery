@@ -8,7 +8,13 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MotionProvider from "@/components/motion/MotionProvider";
 import Choreographer from "@/components/motion/Choreographer";
+import Preloader from "@/components/motion/Preloader";
+import TheViewing from "@/components/motion/TheViewing";
 import { site } from "@/data/site";
+
+// Runs before first paint: returning visitors and reduced-motion users never
+// see the preloader overlay at all.
+const loaderSkipScript = `try{if(sessionStorage.getItem("mh-loaded")||matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.dataset.loader="skip"}}catch(e){}`;
 
 export const metadata: Metadata = {
   title: {
@@ -31,11 +37,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} h-full`}>
       <body className="flex min-h-full flex-col">
+        <script dangerouslySetInnerHTML={{ __html: loaderSkipScript }} />
+        <noscript>
+          <style>{`[data-loader-overlay]{display:none}`}</style>
+        </noscript>
         <a href="#main" className="skip-link dossier">
           Skip to content
         </a>
+        <Preloader />
         <MotionProvider />
         <Choreographer />
+        <TheViewing />
         <Header />
         <main id="main" className="flex-1">
           {children}
