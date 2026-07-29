@@ -1,6 +1,7 @@
 // Static imports so Next knows dimensions and generates blur placeholders.
 // Files are placeholder art until real photography lands — same names, drop-in.
 import type { StaticImageData } from "next/image";
+import { properties } from "./properties";
 
 import hero from "../../public/images/hero.webp";
 import valley from "../../public/images/valley.webp";
@@ -31,6 +32,7 @@ export const propertyImages: Record<
   string,
   { main: StaticImageData; interior: StaticImageData; wide: StaticImageData }
 > = {
+  // Keys must match every slug in properties.ts — the check below enforces it.
   "thornfield-house": { main: thornfield1, interior: thornfield2, wide: thornfield3 },
   "the-glasswing": { main: glasswing1, interior: glasswing2, wide: glasswing3 },
   "beacon-hollow": { main: beacon1, interior: beacon2, wide: beacon3 },
@@ -38,3 +40,14 @@ export const propertyImages: Record<
   "quarry-edge-house": { main: quarry1, interior: quarry2, wide: quarry3 },
   "the-meridian": { main: meridian1, interior: meridian2, wide: meridian3 },
 };
+
+// properties.ts and this file are two lists that have to stay in step. Adding a
+// listing without its images would otherwise fail deep inside a component with
+// "Cannot read properties of undefined"; fail here instead, naming the slug.
+const missing = properties.filter((p) => !propertyImages[p.slug]).map((p) => p.slug);
+if (missing.length) {
+  throw new Error(
+    `No images for ${missing.join(", ")}. Add three files per listing to ` +
+      `public/images (<slug>-1/-2/-3.webp), then import and register them in src/data/images.ts.`
+  );
+}

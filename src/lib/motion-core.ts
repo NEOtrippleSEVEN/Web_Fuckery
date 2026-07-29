@@ -15,6 +15,29 @@ let booted = false;
 let navigate: (href: string) => void = () => {};
 let viewingOverlay: HTMLDivElement | null = null;
 let pendingViewingPath: string | null = null;
+let viewingWatchdog = 0;
+
+// The overlay is opaque and Lenis is stopped while it is up, so every exit
+// path has to come through here — a stranded overlay reads as a frozen page.
+function releaseViewing() {
+  const overlay = viewingOverlay;
+  pendingViewingPath = null;
+  if (viewingWatchdog) {
+    window.clearTimeout(viewingWatchdog);
+    viewingWatchdog = 0;
+  }
+  if (!overlay) return;
+  viewingOverlay = null;
+  gsap.to(overlay, {
+    autoAlpha: 0,
+    duration: DUR.base,
+    ease: EASE.base,
+    onComplete: () => {
+      overlay.remove();
+      lenis?.start();
+    },
+  });
+}
 
 const releaseLoader = () => {
   sessionStorage.setItem(LOADER_KEY, "1");
@@ -47,19 +70,28 @@ function startPreloader() {
     });
   };
 
+  // The overlay is server-rendered and on screen from first paint, but this
+  // code only runs once the motion chunk lands — which is deliberately after
+  // load + idle. So the budget has to be measured from navigation start, not
+  // from here, or a slow chunk silently turns a 3s cap into a 5s one.
+  const elapsed = performance.now();
+  const LIFT_BY = 2000; // begin the lift by here; the lift itself reveals the page
+  const HARD_STOP = 3000; // absolute cap, whatever else has happened
+  const runway = Math.max(0.35, (LIFT_BY - elapsed) / 1000);
+
   const count = { n: 0 };
   const counter = root.querySelector("[data-loader-count]");
   const tl = gsap.timeline({ onComplete: finish });
   tl.fromTo(
     "[data-loader-mark]",
     { autoAlpha: 0, y: 24 },
-    { autoAlpha: 1, y: 0, duration: DUR.base, ease: EASE.out }
+    { autoAlpha: 1, y: 0, duration: Math.min(DUR.base, runway * 0.45), ease: EASE.out }
   )
     .to(
       count,
       {
         n: 100,
-        duration: 1.6,
+        duration: runway,
         ease: EASE.out,
         onUpdate: () => {
           if (counter) counter.textContent = String(Math.round(count.n)).padStart(3, "0");
@@ -67,16 +99,10 @@ function startPreloader() {
       },
       "<"
     )
-    .fromTo(
-      "[data-loader-line]",
-      { scaleX: 0 },
-      { scaleX: 1, duration: 1.6, ease: EASE.out },
-      "<"
-    )
-    .to({}, { duration: 0.4 }); // settle beat — min display ≈ 2s
+    .fromTo("[data-loader-line]", { scaleX: 0 }, { scaleX: 1, duration: runway, ease: EASE.out }, "<");
 
-  // Never trap the user behind the overlay.
-  window.setTimeout(finish, 3000);
+  // Never trap the user behind the overlay, even if the timeline never runs.
+  window.setTimeout(finish, Math.max(200, HARD_STOP - elapsed));
 }
 
 function startLenis() {
@@ -93,7 +119,18 @@ function startViewing() {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0)
       return;
     const anchor = (event.target as HTMLElement).closest<HTMLAnchorElement>("a[data-viewing]");
-    if (!anchor || prefersReducedMotion() || viewingOverlay) return;
+    if (!anchor || prefersReducedMotion()) return;
+
+    // A Viewing is already in flight. Swallow the click rather than returning:
+    // letting it through hands the same href to the router a second time, the
+    // route commits before onComplete sets pendingViewingPath, and the overlay
+    // is then never settled — a double-click would freeze the page.
+    if (viewingOverlay) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+
     const img = anchor.querySelector("img");
     if (!img || !img.complete) return;
 
@@ -137,6 +174,9 @@ function startViewing() {
         onComplete: () => {
           sessionStorage.setItem(VIEWING_KEY, href);
           pendingViewingPath = href;
+          // If that route never commits — failed chunk, blocked push, already
+          // there — nothing else would ever take the overlay down.
+          viewingWatchdog = window.setTimeout(releaseViewing, 2500);
           navigate(href);
         },
       })
@@ -158,27 +198,20 @@ function startViewing() {
 // Called on every route commit: settle the Viewing overlay if one is up.
 function settleViewing(pathname: string) {
   if (!pendingViewingPath || pathname !== pendingViewingPath || !viewingOverlay) return;
-  const overlay = viewingOverlay;
   pendingViewingPath = null;
+  if (viewingWatchdog) {
+    window.clearTimeout(viewingWatchdog);
+    viewingWatchdog = 0;
+  }
 
+  // Hold until the destination hero has actually painted, so the overlay never
+  // uncovers a blank hero — but never hold longer than the cap.
   const started = performance.now();
-  const release = () => {
-    gsap.to(overlay, {
-      autoAlpha: 0,
-      duration: DUR.base,
-      ease: EASE.base,
-      onComplete: () => {
-        overlay.remove();
-        if (viewingOverlay === overlay) viewingOverlay = null;
-        lenis?.start();
-      },
-    });
-  };
   const waitForHero = () => {
     const hero = document.querySelector<HTMLImageElement>("[data-viewing-target]");
     const painted = hero?.complete && hero.naturalWidth > 0;
     if (painted || performance.now() - started > 2000) {
-      window.setTimeout(release, 120);
+      window.setTimeout(releaseViewing, 120);
     } else {
       requestAnimationFrame(waitForHero);
     }
