@@ -17,7 +17,7 @@ export default function PropertiesPage() {
             On the market
           </p>
           <h1 className="font-display type-display mt-4 max-w-4xl" data-reveal>
-            {properties.length} houses, each one walked, priced, and argued&nbsp;over.
+            {properties.length}&nbsp;houses, each one walked, priced, and argued&nbsp;over.
           </h1>
           <p className="mt-8 max-w-xl text-limestone/70" data-reveal>
             Every listing here is one Maren represents directly. If none of them fits, say
@@ -29,7 +29,13 @@ export default function PropertiesPage() {
       <section className="pb-32">
         <div className="shell space-y-24 lg:space-y-36">
           {properties.map((property, i) => (
-            <PropertyRow key={property.slug} property={property} index={i} priority={i === 0} />
+            <PropertyRow
+              key={property.slug}
+              property={property}
+              index={i}
+              priority={i === 0}
+              headingLevel={2}
+            />
           ))}
         </div>
       </section>

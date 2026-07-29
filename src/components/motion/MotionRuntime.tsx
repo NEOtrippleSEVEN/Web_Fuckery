@@ -18,13 +18,26 @@ export default function MotionRuntime() {
 
   useEffect(() => {
     let alive = true;
-    import("@/lib/motion-core").then((mod) => {
-      if (!alive) return;
-      mod.boot((href) => router.push(href));
-      setCore(mod);
-    });
+    // After load + idle: keeps the chunk's parse/eval out of the critical
+    // path on slow devices. The failsafe below covers a chunk that never lands.
+    const start = () =>
+      import("@/lib/motion-core").then((mod) => {
+        if (!alive) return;
+        mod.boot((href) => router.push(href));
+        setCore(mod);
+      });
+    const whenIdle = () =>
+      typeof window.requestIdleCallback === "function"
+        ? window.requestIdleCallback(() => start(), { timeout: 1200 })
+        : window.setTimeout(start, 250);
+    if (document.readyState === "complete") {
+      whenIdle();
+    } else {
+      window.addEventListener("load", whenIdle, { once: true });
+    }
     return () => {
       alive = false;
+      window.removeEventListener("load", whenIdle);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

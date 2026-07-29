@@ -9,7 +9,7 @@ export default function ReviewList({ items }: { items: Review[] }) {
           className={`max-w-3xl ${i % 2 === 1 ? "lg:ml-[30%]" : ""}`}
           data-reveal
         >
-          <p className="font-display type-h3 italic leading-snug">“{review.quote}”</p>
+          <p className="font-display type-h3 leading-snug">“{review.quote}”</p>
           <footer className="dossier mt-6 opacity-70">
             {review.name} · {review.context}
           </footer>

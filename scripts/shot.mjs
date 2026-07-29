@@ -19,6 +19,10 @@ const targets = [
 for (const t of targets) {
   const page = await browser.newPage({ viewport: { width: t.w, height: t.h } });
   await page.goto(`http://localhost:3100${t.url}`, { waitUntil: "networkidle" });
+  // Let the preloader finish so shots record the page, not the overlay.
+  await page
+    .waitForFunction(() => !document.querySelector("[data-loader-overlay]"), { timeout: 6000 })
+    .catch(() => {});
   // Walk the page so lazy images load before a fullPage capture
   await page.evaluate(async () => {
     const step = window.innerHeight / 2;

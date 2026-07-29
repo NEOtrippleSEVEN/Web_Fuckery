@@ -214,14 +214,16 @@ export function route(pathname: string): () => void {
       const viaViewing = sessionStorage.getItem(VIEWING_KEY) === pathname;
       if (viaViewing) sessionStorage.removeItem(VIEWING_KEY);
 
+      // Transform-only lift: no opacity on the headline, so its first paint
+      // (not the reveal) is the LCP record.
       const heroBits = gsap.utils.toArray<HTMLElement>(
         "[data-hero-title], [data-hero-meta], [data-hero-showing]"
       );
       if (heroBits.length && !viaViewing) {
         gsap.fromTo(
           heroBits,
-          { autoAlpha: 0, y: 42 },
-          { autoAlpha: 1, y: 0, duration: DUR.slow, ease: EASE.out, stagger: 0.12, delay: 0.15 }
+          { y: 64 },
+          { y: 0, duration: DUR.slow, ease: EASE.out, stagger: 0.12, delay: 0.15 }
         );
       }
 

@@ -7,9 +7,13 @@ type Props = {
   property: Property;
   index: number;
   priority?: boolean;
+  /** 2 on the properties index, where listings are the top-level content;
+   *  3 on the home page, where they sit under "Currently showing." */
+  headingLevel?: 2 | 3;
 };
 
-export default function PropertyRow({ property, index, priority }: Props) {
+export default function PropertyRow({ property, index, priority, headingLevel = 3 }: Props) {
+  const Heading = `h${headingLevel}` as "h2" | "h3";
   const img = propertyImages[property.slug];
   const flip = index % 2 === 1;
 
@@ -36,14 +40,14 @@ export default function PropertyRow({ property, index, priority }: Props) {
 
       <div className={`space-y-4 lg:col-span-5 ${flip ? "lg:order-1 lg:text-right" : ""}`}>
         <div>
-          <h3 className="font-display type-h3">
+          <Heading className="font-display type-h3">
             <Link
               href={`/properties/${property.slug}`}
               className="transition-colors duration-300 hover:text-brass"
             >
               {property.name}
             </Link>
-          </h3>
+          </Heading>
           <p className="eyebrow mt-2 text-fog">{property.town}</p>
         </div>
 

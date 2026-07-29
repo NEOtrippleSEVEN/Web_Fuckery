@@ -14,7 +14,7 @@
 @theme inline {
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --font-display: "Fraunces Variable", Georgia, serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
 }
 
 :root {
@@ -49,9 +49,11 @@ body {
 
 /* ---------- Editorial type roles ---------- */
 
+/* The shipped file is already pinned to opsz 144 (the high-contrast display
+   cut) at weight 380 — no variation settings to apply, and no other weight
+   available. Changing either means re-running scripts/subset-fonts.mjs. */
 .font-display {
   font-family: var(--font-display);
-  font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0;
   font-weight: 380;
   letter-spacing: -0.015em;
 }
