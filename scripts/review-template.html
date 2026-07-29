@@ -1,0 +1,460 @@
+<title>Maren Holt — build review</title>
+<style>
+  @font-face {
+    font-family: "ReviewSans";
+    src: url(__FONT_SANS__) format("woff2");
+    font-weight: 100 900;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "ReviewMono";
+    src: url(__FONT_MONO__) format("woff2");
+    font-weight: 100 900;
+    font-display: swap;
+  }
+
+  :root {
+    --ground: #eef0f1;
+    --surface: #ffffff;
+    --ink: #14171a;
+    --muted: #656d75;
+    --line: #d6dadd;
+    --accent: #2f6285;
+    --flag: #8a5a1f;
+    --shadow: 0 1px 2px rgba(20, 23, 26, .06), 0 8px 24px rgba(20, 23, 26, .07);
+    --measure: 64ch;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0f1214;
+      --surface: #171b1e;
+      --ink: #e8eaec;
+      --muted: #949ba1;
+      --line: #262c31;
+      --accent: #86b9dc;
+      --flag: #d6a75f;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 28px rgba(0, 0, 0, .34);
+    }
+  }
+  :root[data-theme="light"] {
+    --ground: #eef0f1;
+    --surface: #ffffff;
+    --ink: #14171a;
+    --muted: #656d75;
+    --line: #d6dadd;
+    --accent: #2f6285;
+    --flag: #8a5a1f;
+    --shadow: 0 1px 2px rgba(20, 23, 26, .06), 0 8px 24px rgba(20, 23, 26, .07);
+  }
+  :root[data-theme="dark"] {
+    --ground: #0f1214;
+    --surface: #171b1e;
+    --ink: #e8eaec;
+    --muted: #949ba1;
+    --line: #262c31;
+    --accent: #86b9dc;
+    --flag: #d6a75f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 28px rgba(0, 0, 0, .34);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "ReviewSans", system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin-inline: auto;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 4vw, 2.5rem) 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 7vw, 5.5rem);
+  }
+
+  .label {
+    font-family: "ReviewMono", ui-monospace, monospace;
+    font-size: .72rem;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 4.4vw, 3.1rem);
+    line-height: 1.06;
+    letter-spacing: -.022em;
+    font-weight: 500;
+    text-wrap: balance;
+    margin: .6rem 0 0;
+  }
+
+  h2 {
+    font-size: clamp(1.2rem, 2.1vw, 1.55rem);
+    line-height: 1.2;
+    letter-spacing: -.014em;
+    font-weight: 500;
+    text-wrap: balance;
+    margin: .5rem 0 0;
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 550;
+    margin: 0;
+    letter-spacing: -.005em;
+  }
+
+  p { margin: 0; max-width: var(--measure); }
+  .lede { font-size: 1.08rem; color: var(--muted); }
+
+  a { color: var(--accent); text-underline-offset: .22em; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  header .stack { display: flex; flex-direction: column; gap: 1.1rem; }
+
+  /* ---- section rhythm ---- */
+  section { display: flex; flex-direction: column; gap: 1.5rem; }
+  .head { display: flex; flex-direction: column; gap: .3rem; }
+
+  /* ---- video ---- */
+  figure { margin: 0; display: flex; flex-direction: column; gap: .7rem; }
+  video, .plate img, .still img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #0c120f;
+  }
+  .film {
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    background: #0c120f;
+  }
+  figcaption { color: var(--muted); font-size: .92rem; max-width: var(--measure); }
+
+  /* ---- metrics ---- */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .metric {
+    background: var(--surface);
+    padding: 1.1rem 1.15rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+  }
+  .metric .n {
+    font-family: "ReviewMono", ui-monospace, monospace;
+    font-size: 1.5rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.02em;
+    line-height: 1;
+  }
+  .metric .k { font-size: .82rem; color: var(--muted); }
+  .metric .t {
+    font-family: "ReviewMono", ui-monospace, monospace;
+    font-size: .68rem;
+    color: var(--muted);
+    letter-spacing: .04em;
+  }
+
+  /* ---- stills pair ---- */
+  .pair { display: grid; grid-template-columns: 1fr; gap: 1.4rem; }
+  @media (min-width: 720px) { .pair { grid-template-columns: 1fr 1fr; } }
+  .still img { border: 1px solid var(--line); border-radius: 3px; }
+
+  /* ---- page plates ---- */
+  .plates { display: grid; grid-template-columns: 1fr; gap: 2.2rem; }
+  @media (min-width: 860px) { .plates { grid-template-columns: 1fr 1fr; } }
+
+  .plate { display: flex; flex-direction: column; gap: .6rem; min-width: 0; }
+  .plate .bar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .plate .win {
+    height: 430px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+    background: #0c120f;
+    scrollbar-width: thin;
+  }
+  .plate.tall .win { height: 560px; }
+  .plate .win::-webkit-scrollbar { width: 10px; }
+  .plate .win::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--muted), transparent 55%);
+    border-radius: 10px;
+  }
+  .hint {
+    font-family: "ReviewMono", ui-monospace, monospace;
+    font-size: .66rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  /* mobile plates sit narrower */
+  .phones { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 240px)); gap: 2rem; }
+
+  /* ---- notes ---- */
+  .notes { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 3px; overflow: hidden; }
+  .note { background: var(--surface); padding: 1.25rem 1.3rem; display: flex; flex-direction: column; gap: .45rem; }
+  .note .tag {
+    font-family: "ReviewMono", ui-monospace, monospace;
+    font-size: .66rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--flag);
+  }
+  .note p { font-size: .95rem; color: var(--muted); max-width: 68ch; }
+  .note p strong { color: var(--ink); font-weight: 550; }
+
+  ul { margin: 0; padding-left: 1.1rem; max-width: var(--measure); color: var(--muted); }
+  li { margin-block: .3rem; }
+  li strong { color: var(--ink); font-weight: 550; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-top: 1.4rem;
+    color: var(--muted);
+    font-size: .88rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem 1.4rem;
+  }
+  code {
+    font-family: "ReviewMono", ui-monospace, monospace;
+    font-size: .88em;
+    background: color-mix(in oklab, var(--muted), transparent 88%);
+    padding: .1em .35em;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="stack">
+      <p class="label">Build review · placeholder brand</p>
+      <h1>Maren Holt — a Hudson Valley property site</h1>
+      <p class="lede">
+        Five page types, one signature motion moment, built to the spec in
+        <code>CLAUDE.md</code>. Everything below is the real production build, recorded
+        and screenshotted from it. Your call on whether the craft floor is high enough.
+      </p>
+    </div>
+  </header>
+
+  <section>
+    <div class="head">
+      <p class="label">The walkthrough</p>
+      <h2>Twenty-five seconds, unedited</h2>
+    </div>
+    <figure>
+      <div class="film">
+        <video src="__VIDEO__" controls playsinline preload="metadata" poster="__POSTER__"></video>
+      </div>
+      <figcaption>
+        Cold arrival, so the preloader plays. Then the hero settles, the page scrolls
+        through the reveals, and a listing is clicked — that click is the signature
+        moment. No cuts, no speed changes.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="head">
+      <p class="label">The signature</p>
+      <h2>The Viewing</h2>
+    </div>
+    <p>
+      Clicking a listing does not navigate — it enters. The card's photograph expands
+      from its own position to fill the screen and settles as the detail page's hero,
+      while the route swaps underneath. The overlay only lets go once the destination
+      has actually painted, so there is no flash between the two pages.
+    </p>
+    <div class="pair">
+      <figure class="still">
+        <img src="__IMG_FLIGHT__" alt="The listing photograph mid-expansion, filling most of the viewport as the page dims behind it" />
+        <figcaption>Mid-flight — the photograph is on its way to the hero's geometry.</figcaption>
+      </figure>
+      <figure class="still">
+        <img src="__IMG_LANDED__" alt="The property detail page hero, showing Thornfield House with its schedule of facts" />
+        <figcaption>Landed — same photograph, now the detail hero.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <p class="label">Measured</p>
+      <h2>Lighthouse, mobile, throttled</h2>
+    </div>
+    <div class="metrics">
+      <div class="metric"><span class="n">96</span><span class="k">Performance</span><span class="t">TARGET ≥ 85</span></div>
+      <div class="metric"><span class="n">100</span><span class="k">Accessibility</span><span class="t">ALSO 100 SEO</span></div>
+      <div class="metric"><span class="n">2.2s</span><span class="k">LCP</span><span class="t">TARGET &lt; 2.5s</span></div>
+      <div class="metric"><span class="n">0</span><span class="k">Layout shift</span><span class="t">TARGET &lt; 0.1</span></div>
+      <div class="metric"><span class="n">190<span style="font-size:.62em">KB</span></span><span class="k">Initial JS, gzipped</span><span class="t">BUDGET 200KB</span></div>
+      <div class="metric"><span class="n">61<span style="font-size:.62em">KB</span></span><span class="k">Fonts, all three</span><span class="t">WAS 403KB</span></div>
+    </div>
+    <p>
+      Two changes carry most of that. The fonts are subset to the characters this site
+      actually sets, and the display face is pinned to the single instance the design
+      uses. The whole motion runtime — GSAP, ScrollTrigger, Lenis — loads as a separate
+      chunk after the page is interactive, so it never blocks first paint.
+    </p>
+  </section>
+
+  <section>
+    <div class="head">
+      <p class="label">The pages</p>
+      <h2>Every page type, full length</h2>
+    </div>
+    <p class="lede">These are full-page captures. Scroll inside a frame to see the whole page.</p>
+    <div class="plates">
+      <div class="plate tall">
+        <div class="bar"><h3>Home</h3><span class="hint">scrolls ↓</span></div>
+        <div class="win"><img src="__IMG_HOME__" alt="Home page: full-bleed dusk hero with the headline Houses worth slowing down for, a light section on the practice, three featured listings, client quotes, and a contact band" /></div>
+      </div>
+      <div class="plate tall">
+        <div class="bar"><h3>Property detail</h3><span class="hint">scrolls ↓</span></div>
+        <div class="win"><img src="__IMG_PROPERTY__" alt="Thornfield House detail page: hero photograph, schedule of facts, prose, particulars table, and a viewing call to action" /></div>
+      </div>
+      <div class="plate tall">
+        <div class="bar"><h3>Properties index</h3><span class="hint">scrolls ↓</span></div>
+        <div class="win"><img src="__IMG_PROPERTIES__" alt="Properties index: six listings alternating left and right, followed by a recently sold table" /></div>
+      </div>
+      <div class="plate tall">
+        <div class="bar"><h3>About</h3><span class="hint">scrolls ↓</span></div>
+        <div class="win"><img src="__IMG_ABOUT__" alt="About page: portrait on a light ground, biography, a full-bleed valley photograph, and the five-step selling process" /></div>
+      </div>
+      <div class="plate">
+        <div class="bar"><h3>Contact</h3><span class="hint">scrolls ↓</span></div>
+        <div class="win"><img src="__IMG_CONTACT__" alt="Contact page: phone, email and office details beside a form with topic chips" /></div>
+      </div>
+      <div class="plate">
+        <div class="bar"><h3>404</h3><span class="hint">scrolls ↓</span></div>
+        <div class="win"><img src="__IMG_404__" alt="404 page reading Off the market, with links to the properties and home" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <p class="label">Small screens</p>
+      <h2>Tested down to 320px</h2>
+    </div>
+    <p>
+      No horizontal scroll on any route at 320px, verified by an automated check that
+      also covers heading order, alt text, and the keyboard focus ring.
+    </p>
+    <div class="phones">
+      <div class="plate">
+        <div class="bar"><h3>Home</h3><span class="hint">scrolls ↓</span></div>
+        <div class="win"><img src="__IMG_HOME_M__" alt="Home page on a phone: the hero headline stacks and the listings become a single column" /></div>
+      </div>
+      <div class="plate">
+        <div class="bar"><h3>Property</h3><span class="hint">scrolls ↓</span></div>
+        <div class="win"><img src="__IMG_PROPERTY_M__" alt="Property detail on a phone: hero, facts wrapped onto three rows, and the particulars table" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <p class="label">Read this before deciding</p>
+      <h2>What is real and what is not</h2>
+    </div>
+    <div class="notes">
+      <div class="note">
+        <span class="tag">Images</span>
+        <p>
+          <strong>Every image on this page is placeholder art, not photography.</strong>
+          They are generated gradient dusk-scapes, built to read as intentional colour
+          studies rather than to imitate houses. I did generate eight real architectural
+          photographs and wired a build step that swaps them in, but this container's
+          network blocks that CDN — so what you are looking at is the fallback. On a
+          normal host the photographs would land instead.
+        </p>
+      </div>
+      <div class="note">
+        <span class="tag">Words</span>
+        <p>
+          The agent, the six houses, the prices, the client quotes, the licence number
+          and the office address are all <strong>invented</strong>. The copy is written
+          to real standards — active voice, specific, no filler — but it is placeholder
+          and must be replaced before this is public.
+        </p>
+      </div>
+      <div class="note">
+        <span class="tag">A trade I made</span>
+        <p>
+          The client quotes were set in Fraunces italic. That one font file was 81KB on
+          the critical path, so <strong>the quotes are now roman</strong> and the shipped
+          display font contains no italic at all. If you want the italic back it is a
+          real change, not a CSS tweak — the font has to be re-subset and LCP re-checked.
+        </p>
+      </div>
+      <div class="note">
+        <span class="tag">Still needs a person</span>
+        <p>
+          The concept, real photography, real copy, and the brand itself. This build
+          gets the craft floor high enough that a concept has somewhere to land — it
+          does not supply the concept.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <p class="label">If you want changes</p>
+      <h2>Where the levers are</h2>
+    </div>
+    <ul>
+      <li><strong>Identity</strong> — <code>src/data/site.ts</code> and the palette block at the top of <code>src/app/globals.css</code>. Nothing else hardcodes the brand.</li>
+      <li><strong>Listings and quotes</strong> — <code>src/data/properties.ts</code> and <code>src/data/reviews.ts</code>.</li>
+      <li><strong>Motion feel</strong> — <code>src/lib/motion.config.ts</code> holds the one easing curve and the duration scale for the whole site.</li>
+      <li><strong>Photography</strong> — drop real files into <code>public/images</code> under the existing names. Nothing else changes.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Branch <code>claude/new-session-2qy1dj</code></span>
+    <span>Next.js 16 · React 19 · Tailwind v4 · GSAP · Lenis</span>
+  </footer>
+</div>
+
+<script>
+  // Nudge each plate to the top on load — Safari restores inner scroll otherwise.
+  document.querySelectorAll(".win").forEach(function (w) { w.scrollTop = 0; });
+</script>
