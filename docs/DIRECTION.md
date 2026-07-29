@@ -28,11 +28,19 @@ with a brass underline.
 
 | Role | Face | Use |
 |---|---|---|
-| Display | **Fraunces** (variable, high optical size, wt 340–420, wonk off) | Headlines, nameplate, prices. With restraint — never below 28px. |
+| Display | **Fraunces**, optical size 144, weight 380, roman | Headlines, nameplate, prices, review quotes. With restraint — never below 28px. |
 | Body | **Geist Sans** (400 / 500) | Paragraphs, navigation, UI. |
 | Utility | **Geist Mono** (400) | The dossier voice: beds/baths/sqft schedules, captions, labels, review metadata. |
 
-All open-source, all self-hosted via npm — zero external font requests.
+All open-source, all self-hosted and subset — zero external font requests, 61KB total.
+
+**As-built note (performance pass).** The display face ships *pinned* to that one
+instance rather than as a variable font, because nothing in the design varies it —
+that is what took it from 66KB to 16KB. The italic went with it: an earlier draft
+set the review quotes in Fraunces italic, and the italic file alone was 81KB on the
+critical path, so the quotes are roman. Adding a second display weight, an italic,
+or a different optical size is a real change: re-run `npm run subset-fonts` after
+editing `scripts/subset-fonts.mjs`, and re-check LCP.
 
 ## Layout
 
